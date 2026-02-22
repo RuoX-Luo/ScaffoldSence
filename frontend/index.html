@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RAG DeepSeek QA</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="ambient"></div>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="logo">AI</div>
+        <button class="side-btn" id="toggleHistory" title="打开边栏">☰</button>
+        <button class="side-btn" id="newChatBtn" title="新对话">✦</button>
+        <button class="side-btn" id="openSettingsFromSide" title="设置">⚙</button>
+        <div class="spacer"></div>
+        <div class="avatar">LX</div>
+      </aside>
+
+      <aside id="historyPanel" class="history-panel">
+        <div class="history-head">
+          <h3>历史问答</h3>
+        </div>
+        <div id="historyList" class="history-list"></div>
+      </aside>
+
+      <main class="chat-shell">
+        <header class="topbar">
+          <div class="title-wrap">
+            <h1>ScaffoldSense</h1>
+            <p>基于RAG的脚手架工程问答系统</p>
+          </div>
+          <button id="openSettings" class="setting-btn">设置</button>
+        </header>
+
+        <section class="chat-body">
+          <section id="messages" class="messages"></section>
+          <section id="emptyState" class="empty-state">
+            <h2>你想查询脚手架相关规范吗？</h2>
+            <p>回答将附带 doc_id、doc_name、section_path、page_start/page_end 以及前后文。</p>
+          </section>
+        </section>
+
+        <form id="composer" class="composer">
+          <button type="button" class="attach-btn" title="占位按钮">＋</button>
+          <textarea
+            id="questionInput"
+            rows="1"
+            maxlength="4000"
+            placeholder="请输入你的问题，按 Enter 发送，Shift+Enter 换行"
+          ></textarea>
+          <button type="submit" id="sendBtn" class="send-btn">发送</button>
+        </form>
+      </main>
+    </div>
+
+    <dialog id="settingsModal" class="settings-modal">
+      <form id="settingsForm" class="settings-form" method="dialog">
+        <div class="settings-header">
+          <h3>模型与检索设置</h3>
+          <button type="button" id="closeSettings" class="close-btn">✕</button>
+        </div>
+        <label>
+          DeepSeek API Key
+          <input id="apiKey" type="password" placeholder="sk-..." />
+        </label>
+        <label>
+          Base URL
+          <input id="baseUrl" type="text" placeholder="https://api.deepseek.com" />
+        </label>
+        <label>
+          Model
+          <input id="modelName" type="text" placeholder="deepseek-chat" />
+        </label>
+        <label>
+          Collection
+          <input id="collectionName" type="text" placeholder="regulation_chunks_v1" />
+        </label>
+        <label>
+          Top K
+          <input id="topK" type="number" min="1" max="20" step="1" />
+        </label>
+        <label>
+          Temperature
+          <input id="temperature" type="number" min="0" max="1.5" step="0.1" />
+        </label>
+        <div class="settings-actions">
+          <button type="button" id="cancelSettings" class="ghost-btn">取消</button>
+          <button type="submit" class="primary-btn">保存</button>
+        </div>
+      </form>
+    </dialog>
+
+    <template id="messageTemplate">
+      <article class="message">
+        <div class="bubble"></div>
+        <div class="refs"></div>
+      </article>
+    </template>
+
+    <script src="/static/app.js" defer></script>
+  </body>
+</html>
