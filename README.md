@@ -1,4 +1,10 @@
-# RAG 问答系统（ChromaDB + DeepSeek）
+# ScaffoldSence: RAG-based Scaffolding Engineering QA System
+# 基于RAG的脚手架工程问答系统
+
+This project is a Retrieval-Augmented Generation (RAG) question-answering system built upon the current scaffolding engineering regulations and standards of the People's Republic of China. It integrates ChromaDB for vector retrieval and the DeepSeek API for generative responses, enabling accurate regulation-level querying and context-aware answers.
+本项目基于中华人民共和国现行脚手架工程相关规范与标准文件，构建了一个面向工程实践场景的 RAG（Retrieval-Augmented Generation）问答系统。系统通过 ChromaDB 向量检索结合 DeepSeek 大模型生成能力，实现对规范条文的精准检索与语义级回答。
+
+
 
 这个项目现在包含一个可直接运行的问答系统：
 - 后端：纯 Python HTTP 服务（无额外 Web 框架依赖），读取本地 `chroma_db`，调用 DeepSeek API 生成答案
