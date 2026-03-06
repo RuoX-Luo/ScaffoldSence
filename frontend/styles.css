@@ -148,13 +148,15 @@ body {
 }
 
 .history-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   width: 100%;
-  text-align: left;
   border: 1px solid #d7dfea;
   background: #ffffff;
   border-radius: 12px;
-  padding: 10px 11px;
-  cursor: pointer;
+  padding: 6px;
   transition: background 120ms ease, border-color 120ms ease;
 }
 
@@ -167,6 +169,20 @@ body {
   background: #edf9f7;
 }
 
+.history-open-btn {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  border-radius: 9px;
+  padding: 6px 8px;
+  cursor: pointer;
+}
+
+.history-open-btn:hover {
+  background: #ffffffb0;
+}
+
 .history-title {
   font-size: 13px;
   color: #0f172a;
@@ -177,6 +193,30 @@ body {
   margin-top: 5px;
   font-size: 11px;
   color: #64748b;
+}
+
+.history-delete-btn {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  color: #dc2626;
+  background: #fee2e2;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease, background 120ms ease;
+}
+
+.history-item:hover .history-delete-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.history-delete-btn:hover {
+  background: #fecaca;
 }
 
 .chat-shell {

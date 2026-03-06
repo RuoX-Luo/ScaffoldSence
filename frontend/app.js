@@ -155,6 +155,26 @@ function selectConversation(conversationId) {
   renderConversation();
 }
 
+function deleteConversation(conversationId) {
+  const idx = state.conversations.findIndex((item) => item.id === conversationId);
+  if (idx < 0) return;
+
+  const removingActive = state.activeConversationId === conversationId;
+  state.conversations.splice(idx, 1);
+
+  if (state.conversations.length === 0) {
+    const conv = createConversation();
+    state.conversations = [conv];
+    state.activeConversationId = conv.id;
+  } else if (removingActive) {
+    const nextIndex = Math.min(idx, state.conversations.length - 1);
+    state.activeConversationId = state.conversations[nextIndex].id;
+  }
+
+  saveAndRenderHistory();
+  renderConversation();
+}
+
 function ensureTitle(conversation, userText) {
   if (conversation.title !== "新对话") return;
   const cleaned = String(userText || "").trim();
@@ -178,10 +198,21 @@ function renderHistory() {
     .map((conv) => {
       const activeClass = conv.id === state.activeConversationId ? "active" : "";
       return `
-        <button class="history-item ${activeClass}" data-conv-id="${htmlEscape(conv.id)}">
-          <div class="history-title">${htmlEscape(conv.title || "新对话")}</div>
-          <div class="history-meta">${htmlEscape(formatTime(conv.updatedAt || Date.now()))}</div>
-        </button>
+        <div class="history-item ${activeClass}" data-conv-id="${htmlEscape(conv.id)}">
+          <button class="history-open-btn" data-action="open" data-conv-id="${htmlEscape(conv.id)}" title="打开会话">
+            <div class="history-title">${htmlEscape(conv.title || "新对话")}</div>
+            <div class="history-meta">${htmlEscape(formatTime(conv.updatedAt || Date.now()))}</div>
+          </button>
+          <button class="history-delete-btn" data-action="delete" data-conv-id="${htmlEscape(conv.id)}" title="删除会话" aria-label="删除会话">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 6h18"></path>
+              <path d="M8 6V4h8v2"></path>
+              <path d="M19 6l-1 14H6L5 6"></path>
+              <path d="M10 11v6"></path>
+              <path d="M14 11v6"></path>
+            </svg>
+          </button>
+        </div>
       `;
     })
     .join("");
@@ -459,11 +490,18 @@ function bindEvents() {
   });
 
   elements.historyList.addEventListener("click", (event) => {
-    const target = event.target.closest(".history-item");
+    const target = event.target.closest("[data-action]");
     if (!target) return;
+    const action = target.getAttribute("data-action");
     const conversationId = target.getAttribute("data-conv-id");
     if (!conversationId) return;
-    selectConversation(conversationId);
+    if (action === "delete") {
+      deleteConversation(conversationId);
+      return;
+    }
+    if (action === "open") {
+      selectConversation(conversationId);
+    }
   });
 
   const openModal = () => elements.settingsModal.showModal();
